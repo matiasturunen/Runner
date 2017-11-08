@@ -8,7 +8,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="script.js"></script>
         <script src="lib/phaser.min.js"></script>
-        <script src="runner.js"></script>
+        <script src="runner/runner.js"></script>
 
         <link rel="stylesheet" type="text/css" href="style.css">
     </head><body>
