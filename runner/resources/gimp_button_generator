@@ -1,0 +1,14 @@
+gimp button generator settings:
+
+Font size: 26
+Upper color: #38a8ff
+Lower color: #0081e5
+Text color: #000000
+Upper color (active): #6cc8fd
+Lower color (active): #1da8f8
+Text color (active): #000000
+Font: Sans
+Padding x: 15
+Padding y: 10
+bevel width: 1
+round ratio: 1
