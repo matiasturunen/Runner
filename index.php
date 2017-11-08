@@ -5,8 +5,6 @@ require_once './lib/dblib.php';
 // page header
 $OUTPUT->phead();
 
-$Toplist = DB::getToplist();
-
 ?>
 
 <header>
@@ -20,23 +18,10 @@ $Toplist = DB::getToplist();
     </div>
     <div>
         <ol id="toplist">
-        <?php
-            if (!count($Toplist)) {
-                for ($i=0; $i < 10; $i++) { 
-                    echo "<li>---</li>";
-                }
-            }
-
-            foreach ($Toplist as $entry) {
-                ?>
-                <li>
-                    <?php echo $entry->score ?>
-                </li>
-                <?php
-            }
-        ?>
+        
         </ol>
     </div>
+    <div id="ajaxError"></div>
 </div>
 
 <?php

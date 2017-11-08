@@ -57,6 +57,7 @@ class Main extends Phaser.State {
     this.distance = 0;
     this.crouch = false;
     this.paused = false;
+    this.game.paused = false;
   }
 
   update() {

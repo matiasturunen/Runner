@@ -76,4 +76,12 @@ class DB {
         ];
         DB::sqlExecute($sql, $params);
     }
+
+    public static function getUser($username) {
+        $sql = "SELECT * FROM User WHERE username=:uname";
+        $params = [
+            ':uname' => $username
+        ];
+        return DB::sqlSelect($sql, $params);
+    }
 }

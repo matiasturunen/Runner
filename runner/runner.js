@@ -81,6 +81,7 @@ class Main extends Phaser.State {
     this.distance = 0;
     this.crouch = false;
     this.paused = false;
+    this.game.paused = false;
   }
 
   update() {
@@ -192,6 +193,19 @@ class GameOver extends Phaser.State {
 
   submitScore() {
     console.log('submit score');
+
+      $.ajax('ajax.php', {
+        method: 'POST',
+        data: {
+          m: 'score',
+          user: 1,
+          score: this.distance
+        },
+        success: res => {
+          //$('#ajaxError').html(res);
+          updateToplist(); // Global function
+        }
+      });
   }
 
   startNewGame() {
