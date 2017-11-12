@@ -32,6 +32,9 @@ $SETTINGS = array(
     )
 );
 
+// Start session
+// session_start();
+
 $PDO = getPDO($SETTINGS);
 
 require_once "$APPROOT/lib/outputlib.php";

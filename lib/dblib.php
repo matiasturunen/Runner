@@ -68,7 +68,7 @@ class DB {
      * Delete memo
      */
     public static function addUser($data) {
-        $sql = "INSERT INTO User (username, email, password) VALUES (:uname, :email, :pass";
+        $sql = "INSERT INTO User (username, email, password) VALUES (:uname, :email, :pass)";
         $params = [
             ':uname' => $data->username,
             ':email' => $data->email,
@@ -82,6 +82,27 @@ class DB {
         $params = [
             ':uname' => $username
         ];
-        return DB::sqlSelect($sql, $params);
+        $res = DB::sqlSelect($sql, $params);
+        if (isset($res[0])) {
+            return $res[0];
+        } else {
+            return null;
+        }
+    }
+
+    public static function createGetUser($username) {
+        // Check if user exists
+        $user = DB::getUser($username);
+        if ($user == null) {
+            // Create new user
+            $newUser = new stdClass();
+            $newUser->username = $username;
+            $newUser->email = 'not-an-email@example.com';
+            $newUser->password = uniqid('',true);
+            DB::addUser($newUser);
+
+            $user = DB::getUser($username);
+        }
+        return $user;
     }
 }

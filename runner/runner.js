@@ -18,7 +18,7 @@ class Preload extends Phaser.State {
 
   create() {
     // Switch to next state
-    this.game.state.start('Main');
+    this.game.state.start('Titlescreen');
   }
 }
 
@@ -179,6 +179,7 @@ class GameOver extends Phaser.State {
     this.saveScoresButton;
     this.newgameButton;
     this.distanceText;
+    this.scoreSubmitted;
   }
 
   init(distance) {
@@ -189,6 +190,46 @@ class GameOver extends Phaser.State {
     this.saveScoresButton = this.game.add.button(this.game.world.centerX - 200, this.game.world.centerY, 'submit', this.submitScore, this, 1, 2, 0);
     this.newgameButton = this.game.add.button(this.game.world.centerX - 0, this.game.world.centerY, 'newgame', this.startNewGame, this, 0, 1, 2);
     this.distanceText = this.game.add.text(16, 16, 'DISTANCE: ' + this.distance, { fontSize: '32px', fill: '#4bbafa' });
+    this.scoreSubmitted = false;
+  }
+
+  submitScore() {
+    if (!this.scoreSubmitted) {
+
+    console.log('submit score');
+      $.ajax('ajax.php', {
+        method: 'POST',
+        data: {
+          m: 'score',
+          username: $('#inp-playername').val() || 'Anonymous',
+          score: this.distance
+        },
+        success: res => {
+          $('#ajaxError').html(res);
+          updateToplist(); // Global function
+          this.scoreSubmitted = true;
+        }
+      });
+    }
+  }
+
+  startNewGame() {
+    console.log('new game');
+    this.game.state.start('Main');
+  }
+}
+
+class Titlescreen extends Phaser.State {
+  constructor() {
+    super();
+
+    this.newgameButton;
+    this.titleText;
+  }
+
+  create() {
+    this.newgameButton = this.game.add.button(300, this.game.world.centerY, 'newgame', this.startNewGame, this, 0, 1, 2);
+    this.titleText = this.game.add.text(260, 16, 'RUNNER', { fontSize: '64px', fill: '#4bbafa' });
   }
 
   submitScore() {
@@ -222,6 +263,7 @@ class Game extends Phaser.Game {
     this.state.add('Preload', Preload, false);
     this.state.add('Main', Main, false);
     this.state.add('GameOver', GameOver, false);
+    this.state.add('Titlescreen', Titlescreen, false);
 
     this.state.start('Preload');
   }

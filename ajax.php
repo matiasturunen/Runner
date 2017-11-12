@@ -5,6 +5,7 @@ require_once './lib/dblib.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (!isset($_POST['m'])) {
+		http_response_code(500);
 		die();
 	}
 
@@ -17,13 +18,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 			addScore($_POST);
 			break;
 
+		case 'logout':
+			logout();
+			break;
+
 		default:
-			header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+			http_response_code(500);
 			break;
 	}
 	
 } else if ($_SERVER['REQUEST_METHOD'] == "GET") {
 	if (!isset($_REQUEST['m'])) {
+		http_response_code(500);
 		die();
 	}
 
@@ -33,21 +39,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 			break;
 		
 		default:
-			header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+			http_response_code(500);
 			break;
 	}
 }
 
-die();
+function getCurrentUser() {
+	$user = null;
+	if (isset($_SESSION['USER'])) {
+	    $username = $_SESSION['USER'];
+	    $user = DB::getUser($username);
+	}
+	return $user;
+}
 
 function addScore($post) {
-	// TOOD: Session user check
-	// TODO : safety check
-	$data = new stdClass();
-	$data->score = $post['score'];
-	$data->user = $post['user'];
+	// Create new user or get existing one
+	$user = DB::createGetUser($post['username']);
 
-	DB::addScore($data);
+	// Add score
+	$scoreData = new stdClass();
+	$scoreData->score = $post['score'];
+	$scoreData->user = $user->id;
+
+	DB::addScore($scoreData);
 }
 
 function topList() {
@@ -61,6 +76,27 @@ function topList() {
     }
 }
 
-function login() {
-	return 0;
+function login($data) {
+	if(isset($data['username']) && isset($data['password'])) {
+		$user = DB::getUser($data['username']);
+		echo 'user';
+		print_r ($user);
+		if (isset($user->password) && isset($user->username)) {
+			if ($user->password == $data['password']) {
+				$_SESSION['USER'] = $user->$username;
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	} else {
+		http_response_code(401);
+	}
+}
+
+function logout() {
+	if (getCurrentUser() !== null) {
+		unset($_SESSION['USER']);
+	}
 }

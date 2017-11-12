@@ -29,14 +29,31 @@ header h1 {
 	padding-left: 5px;
 }
 
+#runnerGame {
+	float: left;
+	width: 800px;
+}
+
+#toplist {
+	float: left;
+	width: 180px;
+}
+
+#toplist li {
+	max-height: 18px;
+}
+
 .content {
 	min-height: 600px;
 	padding: 20px 10px 20px 10px;
 }
 
 form {
-	display: inline-block;
 	width: 100%;
+}
+
+form div {
+	margin-top: 90px;
 }
 
 footer {
@@ -64,10 +81,6 @@ ul li {
 	padding-bottom: 5px;
 	margin-top: 3px;
 	display: block;
-}
-
-.no-notes {
-	background-color: none !important;
 }
 
 form input {

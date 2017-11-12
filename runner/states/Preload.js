@@ -12,7 +12,7 @@ class Preload extends Phaser.State {
 
   create() {
     // Switch to next state
-    this.game.state.start('Main');
+    this.game.state.start('Titlescreen');
   }
 }
 
