@@ -1,6 +1,3 @@
-- Tietokannan asetukset config.php tiedostossa
-- Tietokannan sql db/database.sql
-- Tietokanta pitää olla olemassa ennen käyttöä
 
 ## Runner Game
 - DB settings in `config.php`
