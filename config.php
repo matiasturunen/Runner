@@ -32,7 +32,7 @@ $SETTINGS = array(
     ),
     'fb' => array(
         'app_id' => '171609496773366',
-        'app_secret' => file_get_contents('../fbsecret.txt'),
+        'app_secret' => file_get_contents('../fbsecret.txt'), // facebook app secret
     )
 );
 
