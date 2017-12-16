@@ -9,11 +9,12 @@ if(!session_id()) {
 
 $fb = new Facebook\Facebook([
   'app_id' => $SETTINGS['fb']['app_id'], // Replace {app-id} with your app id
-  'app_secret' => '{app-secret}',
+  'app_secret' => $SETTINGS['fb']['app_secret'],
   'default_graph_version' => 'v2.2',
   ]);
 
 $helper = $fb->getRedirectLoginHelper();
+$_SESSION['FBRLH_state']=$_GET['state'];
 
 try {
   $accessToken = $helper->getAccessToken();
@@ -24,6 +25,7 @@ try {
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
   // When validation fails or other local issues
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
+   var_dump($_GET);
   exit;
 }
 

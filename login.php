@@ -13,7 +13,7 @@ $OUTPUT->phead();
 
 $fb = new Facebook\Facebook([
   'app_id' => $SETTINGS['fb']['app_id'], // Replace {app-id} with your app id
-  'app_secret' => '{app-secret}',
+  'app_secret' =>  $SETTINGS['fb']['app_secret'],
   'default_graph_version' => 'v2.2',
   ]);
 
