@@ -14,7 +14,7 @@ class PageRenderer {
     }
 
     /* Add page header */
-    public function phead() {
+    public function phead($scripts = []) {
         include(dirname(dirname(__FILE__)) . '/ui/header.php');
     }
 

@@ -33,7 +33,7 @@ $SETTINGS = array(
 );
 
 // Start session
-// session_start();
+session_start();
 
 $PDO = getPDO($SETTINGS);
 
