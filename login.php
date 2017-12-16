@@ -1,15 +1,34 @@
 <?php
 require_once './config.php';
 require_once './lib/dblib.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+if(!session_id()) {
+    session_start();
+}
+
 
 // page header
 $OUTPUT->phead();
 
+$fb = new Facebook\Facebook([
+  'app_id' => $SETTINGS['fb']['app_id'], // Replace {app-id} with your app id
+  'app_secret' => '{app-secret}',
+  'default_graph_version' => 'v2.2',
+  ]);
 
+$helper = $fb->getRedirectLoginHelper();
 
+$permissions = ['email']; // Optional permissions
+$loginUrl = $helper->getLoginUrl('http://localhost/LUT/www-ohjelmointi/PHASER/fb-callback.php', $permissions);
+
+echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
 
 ?>
-
+<div class="container">
+	
+</div>
+<!--
 <div class="container">
 
 <form id="newuserform" target="" method="POST">
@@ -35,6 +54,7 @@ $OUTPUT->phead();
 </form>
 
 </div>
+-->
 
 <?php
 

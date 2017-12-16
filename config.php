@@ -29,6 +29,9 @@ $SETTINGS = array(
     'admin' => array(
         'username' => 'admin',              // admin username
         'defaultpassword' => 'admin',       // admin default password
+    ),
+    'fb' => array(
+        'app_id' => '171609496773366',
     )
 );
 
