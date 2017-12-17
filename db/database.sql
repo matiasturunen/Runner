@@ -1,8 +1,8 @@
 CREATE TABLE User (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(40),
+	username VARCHAR(200),
 	email VARCHAR(200),
-	password VARCHAR(200)
+	fb_id VARCHAR(40) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE Scores (

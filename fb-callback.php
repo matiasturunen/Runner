@@ -3,7 +3,7 @@ require_once './config.php';
 require_once './lib/dblib.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-if(!session_id()) {
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -27,7 +27,6 @@ try {
 } catch(Facebook\Exceptions\FacebookSDKException $e) {
   // When validation fails or other local issues
   echo 'Facebook SDK returned an error: ' . $e->getMessage();
-   var_dump($_GET);
   exit;
 }
 
@@ -46,16 +45,20 @@ if (! isset($accessToken)) {
 }
 
 // Logged in
-echo '<h3>Access Token</h3>';
-var_dump($accessToken->getValue());
+
+// Debug
+//echo '<h3>Access Token</h3>';
+//var_dump($accessToken->getValue());
 
 // The OAuth 2.0 client handler helps us manage access tokens
 $oAuth2Client = $fb->getOAuth2Client();
 
 // Get the access token metadata from /debug_token
 $tokenMetadata = $oAuth2Client->debugToken($accessToken);
-echo '<h3>Metadata</h3>';
-var_dump($tokenMetadata);
+
+// Debug
+//echo '<h3>Metadata</h3>';
+//var_dump($tokenMetadata);
 
 // Validation (these will throw FacebookSDKException's when they fail)
 $tokenMetadata->validateAppId($SETTINGS['fb']['app_id']); // Replace {app-id} with your app id
@@ -72,18 +75,20 @@ if (! $accessToken->isLongLived()) {
     exit;
   }
 
-  echo '<h3>Long-lived</h3>';
-  var_dump($accessToken->getValue());
+  // Debug
+  //echo '<h3>Long-lived</h3>';
+  //var_dump($accessToken->getValue());
 }
 
-var_dump($accessToken);
+// Debug
+//var_dump($accessToken);
 
 $_SESSION['fb_access_token'] = (string) $accessToken;
 
 // Get user
 try {
   // Returns a `Facebook\FacebookResponse` object
-  $response = $fb->get('/me?fields=id,name', (string) $accessToken);
+  $response = $fb->get('/me?fields=id,name,email', (string) $accessToken);
 } catch(Facebook\Exceptions\FacebookResponseException $e) {
   echo 'Graph returned an error: ' . $e->getMessage();
   exit;
@@ -92,10 +97,26 @@ try {
   exit;
 }
 
-$user = $response->getGraphUser();
-echo "<h3>User</h3>";
-var_dump($user);
+$fbuser = $response->getGraphUser();
+
+// Debug
+//echo "<h3>User</h3>";
+//var_dump($fbuser);
+
+// Save user or get existing from database
+$u = new stdClass();
+$u->name = $fbuser['name'];
+$u->email = $fbuser['email'];
+$u->fbid = $fbuser['id'];
+
+$user = DB::createGetUser($u);
+//var_dump($user);
+$_SESSION['USERID'] = $user->id;
+
+// cookie for js to know if user is logged in
+setcookie('userloggedin');
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
-//header('Location: https://example.com/members.php');
+header('Location: index.php');
+die();

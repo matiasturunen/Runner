@@ -21,21 +21,26 @@ class GameOver extends Phaser.State {
 
   submitScore() {
     if (!this.scoreSubmitted) {
+      if (typeof Cookies.get('userloggedin') === 'undefined') {
+        alert('Log in to save scores!');
+        console.log('no-cookie');
+      } else {
 
-    console.log('submit score');
-      $.ajax('ajax.php', {
-        method: 'POST',
-        data: {
-          m: 'score',
-          username: $('#inp-playername').val() || 'Anonymous',
-          score: this.distance
-        },
-        success: res => {
-          $('#ajaxError').html(res);
-          updateToplist(); // Global function
-          this.scoreSubmitted = true;
-        }
-      });
+
+      console.log('submit score');
+        $.ajax('ajax.php', {
+          method: 'POST',
+          data: {
+            m: 'score',
+            score: this.distance
+          },
+          success: res => {
+            //$('#ajaxError').html(res);
+            updateToplist(); // Global function
+            this.scoreSubmitted = true;
+          }
+        });
+      }
     }
   }
 

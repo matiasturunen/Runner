@@ -12,11 +12,10 @@ $OUTPUT->phead($scripts);
 
 
 $user = null;
-if (isset($_SESSION['USER'])) {
-    $username = $_SESSION['USER'];
-    $user = DB::getUser($username);
+if (isset($_SESSION['USERID'])) {
+    $uid = $_SESSION['USERID'];
+    $user = DB::getUser($uid);
 }
-
 
 ?>
 
@@ -24,12 +23,16 @@ if (isset($_SESSION['USER'])) {
 <?php
 
     if (isset($user) && $user !== null) {
-        echo "<div class=\"userinfo\">";
-        echo "<p>User: " . $user->username . "</p>";
-
-        // Logout button
-        echo "<a class=\"button\" id=\"logoutbutton\">Logout</a>";
-        echo "</div>";
+        ?>
+         <div class="row">
+         <div class="col-sm">
+            <?php echo $user->username; ?>
+         </div>
+         <div class="col-sm">
+            <a class="btn btn-secondary" role="button" href="logout.php" >Logout</a> 
+         </div>
+         </div>
+         <?php
     } else {
         echo "<div class=\"userinfo\"><a href=\"login.php\">Kirjaudu</a></div>";
     }

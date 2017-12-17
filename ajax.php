@@ -2,6 +2,7 @@
 
 require_once './config.php';
 require_once './lib/dblib.php';
+require_once './lib/authlib.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (!isset($_POST['m'])) {
@@ -10,16 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	}
 
 	switch ($_POST['m']) {
-		case 'login':
-			login($_POST);
-			break;
-		
 		case 'score':
 			addScore($_POST);
-			break;
-
-		case 'logout':
-			logout();
 			break;
 
 		default:
@@ -55,14 +48,18 @@ function getCurrentUser() {
 
 function addScore($post) {
 	// Create new user or get existing one
-	$user = DB::createGetUser($post['username']);
+	if (AUTH::checkLogin()) {
+		$user = AUTH::getUser();
+		if ($user !== null) {
+			// Add score
+			$scoreData = new stdClass();
+			$scoreData->score = $post['score'];
+			$scoreData->user = $user->id;
 
-	// Add score
-	$scoreData = new stdClass();
-	$scoreData->score = $post['score'];
-	$scoreData->user = $user->id;
-
-	DB::addScore($scoreData);
+			DB::addScore($scoreData);
+			
+		}
+	}
 }
 
 function topList() {
@@ -74,29 +71,4 @@ function topList() {
     for ($i=0; $i < 10 - count($toplist); $i++) { 
         echo "<li>---</li>";
     }
-}
-
-function login($data) {
-	if(isset($data['username']) && isset($data['password'])) {
-		$user = DB::getUser($data['username']);
-		echo 'user';
-		print_r ($user);
-		if (isset($user->password) && isset($user->username)) {
-			if ($user->password == $data['password']) {
-				$_SESSION['USER'] = $user->$username;
-			} else {
-				http_response_code(401);
-			}
-		} else {
-			http_response_code(401);
-		}
-	} else {
-		http_response_code(401);
-	}
-}
-
-function logout() {
-	if (getCurrentUser() !== null) {
-		unset($_SESSION['USER']);
-	}
 }

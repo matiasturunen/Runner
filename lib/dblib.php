@@ -68,19 +68,23 @@ class DB {
      * Delete memo
      */
     public static function addUser($data) {
-        $sql = "INSERT INTO User (username, email, password) VALUES (:uname, :email, :pass)";
+        $sql = "INSERT INTO User (username, email, fb_id) VALUES (:uname, :email, :pass, :fbid)";
         $params = [
             ':uname' => $data->username,
             ':email' => $data->email,
-            ':pass' => $data->password
+            ':pass' => $data->password,
+            ':fbid' => $data->fbid
         ];
         DB::sqlExecute($sql, $params);
     }
 
-    public static function getUser($username) {
-        $sql = "SELECT * FROM User WHERE username=:uname";
+    /*
+     * Get existing user by id
+     */
+    public static function getUser($id) {
+        $sql = "SELECT * FROM User WHERE id=:uid";
         $params = [
-            ':uname' => $username
+            ':uid' => $id
         ];
         $res = DB::sqlSelect($sql, $params);
         if (isset($res[0])) {
@@ -90,18 +94,37 @@ class DB {
         }
     }
 
-    public static function createGetUser($username) {
+    /*
+     * Get user by fb id
+     */
+    public static function getFBUser($fbid) {
+        $sql = "SELECT * FROM User WHERE fb_id=:fbid";
+        $params = [
+            ':fbid' => $fbid
+        ];
+        $res = DB::sqlSelect($sql, $params);
+        if (isset($res[0])) {
+            return $res[0];
+        } else {
+            return null;
+        }
+    }
+
+    /*
+     * Get existing or create new user
+     */
+    public static function createGetUser($fbuser) {
         // Check if user exists
-        $user = DB::getUser($username);
+        $user = DB::getFBUser($fbuser->fbid);
         if ($user == null) {
             // Create new user
             $newUser = new stdClass();
-            $newUser->username = $username;
-            $newUser->email = 'not-an-email@example.com';
-            $newUser->password = uniqid('',true);
+            $newUser->username = $fbuser->name;
+            $newUser->email = $fbuser->email;
+            $newUser->fbid = $fbuser->fbid;
             DB::addUser($newUser);
 
-            $user = DB::getUser($username);
+            $user = DB::getFBUser($fbid);
         }
         return $user;
     }

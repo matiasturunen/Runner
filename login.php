@@ -1,9 +1,8 @@
 <?php
 require_once './config.php';
-require_once './lib/dblib.php';
-require_once __DIR__ . '/vendor/autoload.php';
+require_once './lib/authlib.php';
 
-if(!session_id()) {
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -11,22 +10,13 @@ if(!session_id()) {
 // page header
 $OUTPUT->phead();
 
-$fb = new Facebook\Facebook([
-  'app_id' => $SETTINGS['fb']['app_id'], // Replace {app-id} with your app id
-  'app_secret' =>  $SETTINGS['fb']['app_secret'],
-  'default_graph_version' => 'v2.2',
-  ]);
+$loginUrl = AUTH::getFBLoginUrl();
 
-$helper = $fb->getRedirectLoginHelper();
-
-$permissions = ['email']; // Optional permissions
-$loginUrl = $helper->getLoginUrl('http://localhost/LUT/www-ohjelmointi/PHASER/fb-callback.php', $permissions);
-
-echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
+$link = '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
 
 ?>
 <div class="container">
-	
+	<?php echo $link; ?>
 </div>
 <!--
 <div class="container">
