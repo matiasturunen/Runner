@@ -43,8 +43,8 @@ if (isset($_SESSION['USERID'])) {
 <div class="container content">
     <div id="runnerGame">
     </div>
-    <ol id="toplist">
-    </ol>
+    <nav class="nav nav-tabs" id="toplistTabs" role="tablist"></nav>
+    <div id="toplist" class="tab-content"></div>
     <div id="ajaxError"></div>
 </div>
 

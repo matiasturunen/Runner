@@ -63,12 +63,17 @@ function addScore($post) {
 }
 
 function topList() {
-	$toplist = DB::getToplist();
+	$toplistAll = DB::getToplist(null);
+	$toplistHour = DB::getToplist('DAY');
+	$toplistMonth = DB::getToplist('MONTH');
 
-    foreach ($toplist as $entry) {
-        echo "<li>$entry->username - $entry->score</li>";
-    }
-    for ($i=0; $i < 10 - count($toplist); $i++) { 
-        echo "<li>---</li>";
-    }
+	$ret = array(
+		'all' => $toplistAll,
+		'day' => $toplistHour,
+		'month' => $toplistMonth
+	);
+
+	global $OUTPUT;
+	$OUTPUT->renderResponse(json_encode($ret));
+
 }

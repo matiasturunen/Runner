@@ -1,3 +1,4 @@
+'use strict';
 import Preload from './states/Preload';
 import Main from './states/Main';
 import GameOver from './states/GameOver';

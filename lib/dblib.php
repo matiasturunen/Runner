@@ -43,10 +43,19 @@ class DB {
     /**
      * Get all memos
      */
-    public static function getToplist() {
+    public static function getToplist($tspan=null) {
         $sql = "SELECT s.score, s.achieved, u.username
-            FROM scores s INNER JOIN user u ON s.userId = u.id
+                FROM scores s INNER JOIN user u ON s.userId = u.id ";
+        if ($tspan == null) {
+            $sql .= " ORDER BY s.score DESC LIMIT 10";    
+        } elseif ($tspan == 'DAY') {
+            $sql .= " WHERE s.achieved >= NOW() - INTERVAL 1 DAY
             ORDER BY s.score DESC LIMIT 10";
+        } elseif ($tspan == 'MONTH') {
+            $sql .= " WHERE s.achieved >= NOW() - INTERVAL 1 MONTH
+            ORDER BY s.score DESC LIMIT 10";
+        }
+        
 
         return DB::sqlSelect($sql);
     }
@@ -68,11 +77,10 @@ class DB {
      * Delete memo
      */
     public static function addUser($data) {
-        $sql = "INSERT INTO User (username, email, fb_id) VALUES (:uname, :email, :pass, :fbid)";
+        $sql = "INSERT INTO User (username, email, fb_id) VALUES (:uname, :email, :fbid)";
         $params = [
             ':uname' => $data->username,
             ':email' => $data->email,
-            ':pass' => $data->password,
             ':fbid' => $data->fbid
         ];
         DB::sqlExecute($sql, $params);
