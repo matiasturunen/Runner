@@ -15,6 +15,11 @@ $WEBROOT = '/lutwww';
 
 require_once "$APPROOT/db/connection.php";
 
+$fbsecret = file_get_contents('../fbsecret.txt');
+if ($fbsecret == null || $fbsecret == '' || $fbsecret == false) {
+    $fbsecret = getenv('FBSECRET');
+}
+
 $SETTINGS = array(
     // database settings
     'db' => array(
@@ -32,7 +37,7 @@ $SETTINGS = array(
     ),
     'fb' => array(
         'app_id' => '171609496773366',
-        'app_secret' => file_get_contents('../fbsecret.txt'), // facebook app secret
+        'app_secret' => $fbsecret, // facebook app secret
     )
 );
 

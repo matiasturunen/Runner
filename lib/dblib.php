@@ -45,7 +45,7 @@ class DB {
      */
     public static function getToplist($tspan=null) {
         $sql = "SELECT s.score, s.achieved, u.username
-                FROM scores s INNER JOIN user u ON s.userId = u.id ";
+                FROM www_scores s INNER JOIN www_user u ON s.userId = u.id ";
         if ($tspan == null) {
             $sql .= " ORDER BY s.score DESC LIMIT 10";    
         } elseif ($tspan == 'DAY') {
@@ -64,7 +64,7 @@ class DB {
      * Add new memo
      */
     public static function addScore($data) {
-        $sql = "INSERT INTO scores (score, userId) VALUES (:score, :user)";
+        $sql = "INSERT INTO www_scores (score, userId) VALUES (:score, :user)";
 
         $params = [
             ':score' => $data->score,
@@ -77,7 +77,7 @@ class DB {
      * Delete memo
      */
     public static function addUser($data) {
-        $sql = "INSERT INTO User (username, email, fb_id) VALUES (:uname, :email, :fbid)";
+        $sql = "INSERT INTO www_User (username, email, fb_id) VALUES (:uname, :email, :fbid)";
         $params = [
             ':uname' => $data->username,
             ':email' => $data->email,
@@ -90,7 +90,7 @@ class DB {
      * Get existing user by id
      */
     public static function getUser($id) {
-        $sql = "SELECT * FROM User WHERE id=:uid";
+        $sql = "SELECT * FROM www_User WHERE id=:uid";
         $params = [
             ':uid' => $id
         ];
@@ -106,7 +106,7 @@ class DB {
      * Get user by fb id
      */
     public static function getFBUser($fbid) {
-        $sql = "SELECT * FROM User WHERE fb_id=:fbid";
+        $sql = "SELECT * FROM www_User WHERE fb_id=:fbid";
         $params = [
             ':fbid' => $fbid
         ];
