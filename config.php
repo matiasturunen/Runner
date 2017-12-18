@@ -11,7 +11,7 @@ $APPNAME = "LUT WWW";
 $APPROOT = dirname(__FILE__);
 
 // web root 
-$WEBROOT = '/lutwww';
+$WEBROOT = 'http://localhost/LUT/www-ohjelmointi/PHASER';
 
 require_once "$APPROOT/db/connection.php";
 

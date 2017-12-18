@@ -1,5 +1,5 @@
 <?php
-require_once './lib/authlib.php';
+require_once __DIR__ . '/lib/authlib.php';
 if (AUTH::checkLogin()) {
 	session_unset();
 	session_destroy();

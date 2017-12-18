@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . './dblib.php';
+require_once __DIR__ . '/dblib.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class AUTH {
@@ -21,6 +21,7 @@ class AUTH {
 
 	public static function getFBLoginUrl() {
 		global $SETTINGS;
+		global $WEBROOT;
 		AUTH::ensureSession();
 		$fb = new Facebook\Facebook([
 		  'app_id' => $SETTINGS['fb']['app_id'], // Replace {app-id} with your app id
@@ -31,7 +32,7 @@ class AUTH {
 		$helper = $fb->getRedirectLoginHelper();
 
 		$permissions = ['email']; // Optional permissions
-		$loginUrl = $helper->getLoginUrl('http://localhost/LUT/www-ohjelmointi/PHASER/fb-callback.php', $permissions);
+		$loginUrl = $helper->getLoginUrl($WEBROOT . '/fb-callback.php', $permissions);
 		return $loginUrl;
 	}
 

@@ -1,8 +1,8 @@
 <?php
 
-require_once './config.php';
-require_once './lib/dblib.php';
-require_once './lib/authlib.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/lib/dblib.php';
+require_once __DIR__ . '/lib/authlib.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (!isset($_POST['m'])) {

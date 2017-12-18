@@ -1,6 +1,6 @@
 <?php
-require_once './config.php';
-require_once './lib/dblib.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/lib/dblib.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 if (session_status() == PHP_SESSION_NONE) {
@@ -114,7 +114,7 @@ $user = DB::createGetUser($u);
 $_SESSION['USERID'] = $user->id;
 
 // cookie for js to know if user is logged in
-setcookie('userloggedin');
+setcookie('userloggedin', 'true');
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.

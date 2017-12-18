@@ -1,6 +1,6 @@
 <?php
-require_once './config.php';
-require_once './lib/dblib.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/lib/dblib.php';
 
 $scripts = [
     "js/index.js",

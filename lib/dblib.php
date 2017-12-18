@@ -45,7 +45,7 @@ class DB {
      */
     public static function getToplist($tspan=null) {
         $sql = "SELECT s.score, s.achieved, u.username
-                FROM www_scores s INNER JOIN www_user u ON s.userId = u.id ";
+                FROM www_Scores s INNER JOIN www_User u ON s.userId = u.id ";
         if ($tspan == null) {
             $sql .= " ORDER BY s.score DESC LIMIT 10";    
         } elseif ($tspan == 'DAY') {
@@ -64,7 +64,7 @@ class DB {
      * Add new memo
      */
     public static function addScore($data) {
-        $sql = "INSERT INTO www_scores (score, userId) VALUES (:score, :user)";
+        $sql = "INSERT INTO www_Scores (score, userId) VALUES (:score, :user)";
 
         $params = [
             ':score' => $data->score,
